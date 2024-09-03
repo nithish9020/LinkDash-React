@@ -1,0 +1,62 @@
+.infocard-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 4ch;
+    margin: 0;
+    padding: 3%;
+    width: 100%;
+    background-color: whitesmoke;
+}
+
+.profname{
+    font-weight: 600;
+    font-family: "Kanit", sans-serif;
+    /* border: 1px solid black; */
+    color: green;
+}
+
+.profrole{
+    color: rgb(45, 69, 3);
+    font-size: 1.5rem;
+}
+
+.profPic{
+    border-radius: 20%;
+    height: 15ch;
+    width: 15ch;
+    /* border: black 1px solid; */
+}
+
+.skill-container{
+    /* border: 1px solid black; */
+    display: flex;
+    gap: 1ch;
+    max-width: 90%;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.skilldiv{
+    text-align: center;
+    padding: 20px;
+    border-radius: 3ch;
+    color: brown;
+    background-color: bisque ;
+}
+
+.flexCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profdesc{
+    padding: 4%;
+    font-size: 1.1rem;
+    color: cadetblue;
+    text-wrap: wrap;
+
+}

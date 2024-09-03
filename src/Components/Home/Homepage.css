@@ -1,0 +1,15 @@
+.home-container{
+    display: flex;
+    width: 90%;
+    margin: 100px auto;
+    justify-content: space-evenly;
+    gap: 100px;
+}
+
+.home-container-div{
+    width: 50%;
+    /* border: 1px solid brown; */
+}
+
+
+

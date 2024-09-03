@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+.navitems {
+    list-style: none;
+    font-family: "Roboto Condensed", sans-serif;
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+    width: 100%; 
+}
+
+.navitems li{
+    text-decoration: none;
+    transition: transform 300ms ease-in-out;
+}
+
+.navitems li:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+    color: green;
+}
+
+.containerNavbar{
+    padding: 15px;
+    max-width: 90%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10vh;
+    margin: 20px auto;
+}
+
+.navLink {
+    text-decoration: none; /* Removes underline */
+    color: inherit; /* Inherits the color from the parent element */
+  }
+
+.nav-searchbar{
+    border-radius: 4ch;
+    height: 60px;
+    width: 400px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.flexEven{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.navbar{
+    /* border: 1px solid black; */
+    width: 50%;
+}

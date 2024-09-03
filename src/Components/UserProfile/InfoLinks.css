@@ -1,0 +1,9 @@
+.InfoLink-container{
+    padding: 3%;
+    background-color:#DDDDDD;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 4ch;
+}

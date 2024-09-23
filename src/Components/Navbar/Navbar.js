@@ -10,11 +10,11 @@ const Navbar = () => {
            <Logo/> 
         </div>
         <div className='flexEven'>
-          <UserSearch/>
+          <UserSearch size={400}/>
         </div>
         <div className='navbar flexEven'>
-                <ul className='navitems flexEven'>
-                <li>
+          <ul className='navitems flexEven'>
+          <li>
             <Link to="/" className='navLink'>Home</Link>
           </li>
           <li>
@@ -23,7 +23,7 @@ const Navbar = () => {
           <li>
             <Link to="/about" className='navLink'>About</Link>
           </li>
-                </ul>
+          </ul>
         </div>
     
     </div>

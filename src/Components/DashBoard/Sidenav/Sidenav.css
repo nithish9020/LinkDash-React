@@ -1,0 +1,55 @@
+.flexCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.side-nav-div {
+    height: 100%;
+}
+.prof-welcome {
+    height: 30%;
+}
+.nav-div {
+    height: 40%;
+}
+.search-div{
+    height: 15%;
+}
+.logout-div{
+    height: 15%;
+}
+.wel-text{
+    font-size: 1.2rem;
+    justify-content: center;
+}
+
+.name-text{
+    color: green;
+    font-size: 2rem;
+}
+.Edit-nav{
+    list-style-type: none;
+    font-family: monospace;
+    font-size: 1rem;
+    padding: 0;
+    margin: 0;
+    width: 100%; 
+}
+.Edit-nav  li {
+    cursor:pointer;
+    font-size: 1rem;
+    text-align: center;
+    margin: 6%;
+    width: 100%;
+    background-color: rgb(205, 236, 205);
+    border-radius: 2vh;
+    padding: 1vh;    
+}
+.logout-btn{
+    cursor:pointer;
+    font-size: 1.1rem;
+    padding: 30% 100%;
+    border-radius: 3ch;
+    border: none;
+}

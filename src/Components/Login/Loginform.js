@@ -1,13 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './Login.css'
+import { useNavigate } from 'react-router-dom';
 import {auth} from '../../Config/Firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css';
 
-const Loginform = () => {
+const Loginform = ({handleLogin}) => {
   
-  const [email,setEmail] =("");
-  const [password,setPassword] = ("");
-  
-  
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const navigate = useNavigate();
+  const login = async () => {
+    try {
+      const user = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(user);
+      const isAuthenticated = handleLogin();
+      if(isAuthenticated){
+         navigate('/dashboard');
+      }
+
+    } catch (error) {
+      toast.error(error.message, {
+        position: "bottom-right",
+    });
+      console.log(error)
+    }
+  }
   
   return (
     
@@ -18,7 +41,7 @@ const Loginform = () => {
       <div className='flexGrid input-div'>
           <input 
             className='input-login' 
-            placeholder='Instagram Handle' 
+            placeholder='Email' 
             type='email'
             onChange={ e => setEmail(e.target.value) }
             required/>
@@ -30,9 +53,7 @@ const Loginform = () => {
           required/>
           <button 
               className='login-button'
-              onClick={ () => {
-                
-              }}
+              onClick={login}
           >
               Login</button>
       </div>

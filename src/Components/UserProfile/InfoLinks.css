@@ -1,9 +1,47 @@
 .InfoLink-container{
-    padding: 3%;
-    background-color:#DDDDDD;
+    height: 100%;
+    row-gap: 1.5vh;
+    padding: 2%;
+    background-color: rgb(240, 232, 220);
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
     border-radius: 4ch;
+    box-sizing: border-box;
 }
+
+.Contact-Container{
+    border-radius: 4ch;
+    width: 90%;
+    padding: 2%;
+    background-color:#c9dbaa;
+    display: flex;
+    row-gap: 2vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.Contact-icon-Container{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.store-button{
+    font-size: 1rem;
+    border:none;
+    padding: 2cap;
+    border-radius: 4ch;
+    color: brown;
+    background-color: burlywood;
+    transition: transform 200ms ease-in-out;
+}
+
+.store-button:hover{
+    transform: scale(1.2);
+    cursor: pointer;
+}
+

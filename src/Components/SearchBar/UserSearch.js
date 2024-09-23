@@ -5,7 +5,7 @@ import { db } from '../../Config/Firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-const UserSearch = () => {
+const UserSearch = ({size}) => {
   // Hooks must be called inside the function component
   const [idList, setId] = useState([]);
   const [inputUser, setInputUser] = useState('');
@@ -41,7 +41,7 @@ const UserSearch = () => {
       disablePortal
       onInputChange={(event, input) => setInputUser(input)}
       options={idList.map(item => item.instagramId)} // Extract just the instagramId strings for the options
-      sx={{ width: 400, "& .MuiOutlinedInput-root": { borderRadius: 3 } }}
+      sx={{ width: size, "& .MuiOutlinedInput-root": { borderRadius: 3 } }}
       renderInput={(params) => <TextField {...params} label="Search User"  onKeyDown={handleKeyDown}/> }
     />
   );

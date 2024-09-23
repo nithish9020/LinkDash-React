@@ -1,19 +1,21 @@
 .infocard-container{
     display: flex;
+    height: 100%;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     border-radius: 4ch;
     margin: 0;
     padding: 3%;
-    width: 100%;
+    flex: 1;
     background-color: whitesmoke;
+    box-sizing: border-box;
 }
 
 .profname{
     font-weight: 600;
     font-family: "Kanit", sans-serif;
-    /* border: 1px solid black; */
+
     color: green;
 }
 
@@ -26,11 +28,9 @@
     border-radius: 20%;
     height: 15ch;
     width: 15ch;
-    /* border: black 1px solid; */
 }
 
 .skill-container{
-    /* border: 1px solid black; */
     display: flex;
     gap: 1ch;
     max-width: 90%;

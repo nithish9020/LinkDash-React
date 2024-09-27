@@ -1,0 +1,79 @@
+.EditDes-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1%;
+    height: 100%;
+    flex: 1;
+    border-radius: 3ch;
+    box-sizing: border-box;
+}
+.Heading{
+    font-size: 1.5rem;
+    font-family:monospace;
+}
+.input-box-container {
+    gap: 5ch;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black;  */
+}
+.Flex-box{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.Skill-container {
+    box-sizing: border-box;
+    padding: 0 5%;
+}
+
+.skill-button-container{
+    row-gap: 2ch;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.skill-button-container button{
+    color: brown;
+    font-weight: 700;
+    background-color: burlywood;
+    border: none;
+    padding: 2ch 5ch;
+    border-radius: 3ch;
+    font-size: 1rem;
+    font-family: monospace;
+}
+
+.desu-but{
+    padding: 1.5vh 2.5vh;
+    font: 1.5em sans-serif;
+    border-radius: 4em;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    transition: transform 200ms ease-in-out;
+}
+.desu-but:hover {
+    transform: scale(1.1);
+}
+
+.skill-button {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .skill-button:hover {
+    background-color: #e0e0e0;
+  }
+

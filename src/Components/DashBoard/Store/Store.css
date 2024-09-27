@@ -1,0 +1,15 @@
+.store-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    row-gap: 10ch;
+    /* border: 1px solid black; */
+}
+
+.store {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2ch;
+    /* border: 1px solid black; */
+}

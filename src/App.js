@@ -10,7 +10,7 @@ import MainDash from './Components/DashBoard/MainDash';
 import { ToastContainer } from 'react-toastify';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -19,9 +19,6 @@ function App() {
 
   const handleLogOut = () => {
     setIsAuthenticated(false);
-  }
-  const handletest= () => {
-
   }
 
   return (
@@ -33,14 +30,14 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path='/about' element={<Aboutus />} />
         <Route path='/profile' element={<MainProfile />} />
-        <Route path="/dash-test" element={<MainDash handleLogOut={handletest}/>}/>
-        {isAuthenticated ? (
-          <Route path="/dashboard" element={<MainDash handleLogOut={handleLogOut}/>} />
+        <Route path="/dashboard/*" element={<MainDash handleLogOut={handleLogOut}/>} />
+        {/* {isAuthenticated ? (
+          <Route path="/dashboard/*" element={<MainDash handleLogOut={handleLogOut}/>} />
         ) : (
           <Route path
           
           ="*" element={<Navigate to="/" />} />
-        )}
+        )} */}
       </Routes>
       <ToastContainer />
     </Router>

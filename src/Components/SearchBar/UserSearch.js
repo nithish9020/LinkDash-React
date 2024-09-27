@@ -5,8 +5,8 @@ import { db } from '../../Config/Firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-const UserSearch = ({size}) => {
-  // Hooks must be called inside the function component
+const UserSearch = ({size, isDash=false}) => {
+
   const [idList, setId] = useState([]);
   const [inputUser, setInputUser] = useState('');
   const navigate = useNavigate();
@@ -26,8 +26,10 @@ const UserSearch = ({size}) => {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      // You can customize the path or logic based on the input value
-      navigate('/profile', { state: { selectedId: inputUser } }); // Navigate to a specific route based on inputValue
+      if(!isDash)
+          navigate('/profile', { state: { selectedId: inputUser } });
+      else  
+          navigate('/dashboard/profile', {state: {selectedId: inputUser}});
     }
   };
 

@@ -1,57 +1,113 @@
-import React, { useState } from 'react';
+import React, { useState, useRef,useContext } from 'react';
+import { UserContext } from '../../App';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {collection, addDoc} from 'firebase/firestore';
-import { auth,db } from '../../Config/Firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../../Config/Firebase';
+import emailjs from 'emailjs-com';
 import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Toastify CSS
 import './Signup.css';
 
 const Signup = () => {
+
+    const idList = useContext(UserContext).map(item => item.userId)|| [];
+
+    console.log(idList);
+
     const texthead = "[ Sign up to edit your LinkDash from your dashboard after logging in ]";
     const [email, setEmail] = useState("");
+    const [userName, setName] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [igHandle, setIg] = useState("");
-    const [isRegister, setRegister] = useState(false);
+    const [userId, setUserId] = useState("");
+    const [otp, setOtp] = useState(""); // For storing the OTP input by the user
+    const [generatedOtp, setGeneratedOtp] = useState(""); // For storing the generated OTP
+    const [otpSent, setOtpSent] = useState(false); // To show OTP input when OTP is sent
     const [errorMessage, setErrorMessage] = useState("");
     
+    const form = useRef(); // UseRef to target the form for EmailJS
     const navigate = useNavigate(); // Initialize useNavigate
-
+    
     const passwordsMatch = password === confirmPassword;
+
+    // Random 6-digit OTP generator function
+    const generateOtp = () => {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    };
+
+    const sendEmail = (e) => {
+        
+        // Generate and set OTP
+        const otpCode = generateOtp();
+        setGeneratedOtp(otpCode);
+
+        const templateParams = {
+            to_email: email,  // Recipient email
+            message: otpCode,  // OTP to send
+          };
+        
+        // Send the OTP via EmailJS
+        emailjs.send('service_seqaed2', 'template_oohlgse', templateParams, 'TItVCrCoNmPhzn0Oq')
+        .then((response) => {
+            console.log('Email sent sucessfully',response.status,response.text);
+            toast.success("OTP sent!", {
+                position: "top-left",
+            });
+            setOtpSent(true); // Display OTP input
+        })
+        .catch((err) => {
+            console.log('Error sending email :', err);
+            toast.error(err.message, {
+                position: "top-left",
+            });
+        });
+    };
 
     const CreateDoc = async () => {
         try {
-            const docRef = await addDoc(collection(db,"Links"), {
-                instagram:igHandle,
+
+            const docRef = doc(db,"Description",email);
+            await setDoc(docRef,{
+                email: email,
+                name: userName,
+                userId: userId,
+                Role: "",
+                Description: "",
+                skills : []
+            })
+
+            const colRef = doc(db,'Store',email);
+            await setDoc(colRef,{
+                stores:[]
             });
+
+            const linkRef = doc(db,"Links",email);
+            await setDoc(linkRef,{
+                linkArray:[]
+            });
+
             toast.success("Hey Folk! Your Dashboard is Ready!", {
                 position: "bottom-left",
             });
-            console.log("Document written with "+docRef.id);
+            console.log("Document written with ID: " + docRef.id);
             setTimeout(() => {
-                navigate('/'); 
+                navigate('/');
             }, 3000);
-            
-        } catch(err){
+        } catch (err) {
             toast.error(err.message, {
                 position: "bottom-left",
             });
-            console.log(err)
+            console.log(err);
         }
     };
     
     const Register = async () => {
         try {
-            const user = await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-            console.log(user);
+            const user = await createUserWithEmailAndPassword(auth, email, password);
+
             CreateDoc();
             
-            // Show success toast
             toast.success("Signed up successfully!", {
                 position: "bottom-right"
             });
@@ -60,6 +116,16 @@ const Signup = () => {
                 position: "bottom-right",
             });
             console.log(err);
+        }
+    };
+
+    const handleOtpSubmit = () => {
+        if (otp === generatedOtp) {
+            Register(); // Proceed with registration if OTP is correct
+        } else {
+            toast.error("Invalid OTP!", {
+                position: "bottom-center"
+            });
         }
     };
 
@@ -81,8 +147,25 @@ const Signup = () => {
                     <input
                         type='text'
                         className='signup-input'
-                        placeholder='Enter Instagram Handle'
-                        onChange={(e) => setIg(e.target.value)}
+                        placeholder='Enter User Id'
+                        maxLength={30}
+                        onChange={(e) => {
+                            setUserId(e.target.value);
+                            if(idList.includes(e.target.value)){
+                                setErrorMessage("UserID unavailable");
+                                console.log("userId unavailable");
+                            } else {
+                                setErrorMessage("");
+                            }
+                        }}
+                        required
+                    />
+                    <input
+                        type='text'
+                        className='signup-input'
+                        placeholder='Enter Your Name'
+                        maxLength={40}
+                        onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </div>
@@ -105,9 +188,7 @@ const Signup = () => {
                                 ? '4px solid green'
                                 : '4px solid red'
                         }}
-                        onChange={(e) => {
-                            setConfirmPassword(e.target.value);
-                        }}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
                 </div>
@@ -116,17 +197,34 @@ const Signup = () => {
                     <button
                         className='signup-button'
                         onClick={() => {
-                            if (passwordsMatch) {
-                                Register();
-                                setErrorMessage("");
+                            if(errorMessage===""){
+                                sendEmail(); 
                             } else {
-                                setErrorMessage("Passwords do not match");
+                                setErrorMessage("Check Your Details once again!")
                             }
-                        }}
+                        }} 
                     >
-                        SignUp
+                        Send OTP
                     </button>
                 </div>
+
+                {/* OTP input shows up once OTP is sent */}
+                {otpSent && (
+                    <div className='flexdisp' style={{ margin: "3%" }}>
+                        <input
+                            type='text'
+                            className='signup-input'
+                            placeholder='Enter OTP'
+                            onChange={(e) => setOtp(e.target.value)}
+                        />
+                        <button
+                            className='signup-button'
+                            onClick={handleOtpSubmit} // Verify OTP and proceed with registration
+                        >
+                            Verify OTP
+                        </button>
+                    </div>
+                )}
 
                 <div className='flexdisp'>
                     {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}

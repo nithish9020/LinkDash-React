@@ -32,3 +32,13 @@
     border: none;
     background-color: greenyellow;
 }
+
+.reset-pass {
+    border: none;
+    background-color: transparent;
+    color: green;
+    font-size: 1.4rem;
+    font-weight: 300;
+    font-family: monospace;
+    cursor: pointer;
+}

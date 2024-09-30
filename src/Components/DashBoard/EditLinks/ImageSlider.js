@@ -2,37 +2,33 @@ import React, { useRef } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import './EditLinks.css';  // Import the CSS file
+import './EditLinks.css';  
+import { ImageOnly} from "../../../Config/Logos";
 
-const ImageSlider = () => {
+const ImageSlider = ({AddSocial}) => {
   const sliderRef = useRef(null);  // Reference to the slider
-
-  const images = [
-    "https://via.placeholder.com/150", // Replace with actual image URLs
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150",
-    "https://via.placeholder.com/150"
-  ];
 
   const settings = {
     dots: false,
     infinite: true,
     speed: 100,
-    slidesToShow: 5, 
+    slidesToShow: 7, 
     slidesToScroll: 1
   };
 
   return (
-    <div style={{ width: "90%", margin: "0 auto", position: "relative" }}>
+    <div style={{ width: "100%", margin: "0 auto", position: "relative" }}>
       <Slider ref={sliderRef} {...settings}>
-        {images.map((image, index) => (
+        {ImageOnly.map((image, index) => (
           <div key={index}>
-            {/* Apply CSS class for image */}
             <img 
+              style={{height:"65px",width:"65px",borderRadius:"2ch",objectFit:"cover"}}
               src={image} 
               alt={`Slide ${index}`} 
               className="slider-img"
+              onClick={() => {
+                AddSocial(index);
+              }}
             />
           </div>
         ))}

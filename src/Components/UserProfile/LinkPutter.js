@@ -1,5 +1,6 @@
 import React from 'react'
 import './InfoLinks.css'
+import { ImageOnly } from '../../Config/Logos';
 import { Instagram,GitHub,LinkedIn,WhatsApp,Telegram,LocalPhone,YouTube,X } from '@mui/icons-material';
 
 const LinkPutter = ({heading}) => {
@@ -19,9 +20,9 @@ const LinkPutter = ({heading}) => {
     <div className='Contact-Container'>
         <h1>{heading}</h1>
         <div className='Contact-icon-Container'>
-        {contact.map((c) => (
-            <a href={c.link} key={c.id} target="_blank" rel="noopener noreferrer">
-               {c.icon}
+        {ImageOnly.map((c) => (
+            <a href="" target="_blank" rel="noopener noreferrer">
+               <img src={c} alt="social" style={{height:"50px",width:"50px"}}/>
             </a>
           ))}
         </div>

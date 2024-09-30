@@ -5,6 +5,7 @@ import {auth} from '../../Config/Firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { toast } from 'react-toastify'; // Import Toastify
 import 'react-toastify/dist/ReactToastify.css';
+import PassChange from '../PasswordChange/PassChange';
 
 const Loginform = ({handleLogin}) => {
   
@@ -56,6 +57,12 @@ const Loginform = ({handleLogin}) => {
               onClick={login}
           >
               Login</button>
+      </div>
+      <div style={{display:"flex",justifyContent:"flex-end",padding:"3vw"}}>
+        <button 
+        className='reset-pass'
+        onClick={() => PassChange(email)}
+        >Reset Password?</button>
       </div>
     </div>
   )

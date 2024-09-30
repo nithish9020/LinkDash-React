@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import './EditDes.css';
+import React, { useContext, useState } from 'react';
+import { TextField } from '@mui/material';
 import { toast } from 'react-toastify';
+import { doc, updateDoc } from 'firebase/firestore'; // Import updateDoc
+import { db } from '../../../Config/Firebase'; // Import your Firebase config
+import './EditDes.css';
+import { userAuthDetails } from '../MainDash';
 
 const EditDes = () => {
-  const [name, setName] = useState("Nithsih");
-  const [Role, setRole] = useState("Student");
-  const [description, setDes] = useState("If you need to perform different actions based on the value of the input or customize the routing path, you can adjust the handleKeyDown function accordingly. For instance, if you want to navigate to a route that includes a query parameter or based on selected value, you can modify the logic within handleKeyDown.");
-  const [skills, setSkills] = useState(["Java", "C++", "Python"]);
-  const [newSkill, setNewSkill] = useState("");
+  
+  const userData = useContext(userAuthDetails); // Get user data from context
 
+  const [name, setName] = useState(userData?.name || ""); 
+  const [Role, setRole] = useState(userData?.Role || ""); 
+  const [description, setDes] = useState(userData?.Description || "");
+  const [skills, setSkills] = useState(userData?.skills || []);
+  const [newSkill, setNewSkill] = useState("");
+  const [userId, setUserId] = useState(userData?.userId || "");
+
+  // Function to remove a skill
   const handleRemoveSkill = (skillToRemove) => {
     setSkills((prevSkills) => prevSkills.filter(skill => skill !== skillToRemove));
   };
 
+  // Function to add a skill
   const handleAddSkill = (event) => {
     if (event.key === 'Enter' && newSkill.trim() !== '') {
       if (skills.length < 8) {
@@ -29,38 +38,72 @@ const EditDes = () => {
     }
   };
 
+  // Function to update the user description in Firestore
+  const handleUpdate = async () => {
+    try {
+      // Reference to the document in Firestore (replace 'Description' with your collection name)
+      const docRef = doc(db, 'Description', userData?.email);
+
+      // Update the document with the new data
+      await updateDoc(docRef, {
+        name: name,
+        Role: Role,
+        Description: description,
+        skills: skills,
+        userId: userId
+      });
+
+      toast.success("Description updated successfully!", {
+        position: "bottom-right"
+      });
+    } catch (error) {
+      toast.error("Error updating description: " + error.message, {
+        position: "bottom-right"
+      });
+      console.error("Error updating document:", error);
+    }
+  };
+
   return (
     <div className='EditDes-container'>
       <div>
-        <p className='Heading'>Edit Description</p> 
+        <p className='Heading'>Edit Description</p>
       </div>
       <div className='input-box-container'>
         <div className='Flex-box'>
           <TextField
+            id="user-id-box"
+            label="User ID"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            variant="standard"
+            sx={{ width: "30%" }}
+          />
+          <TextField
             id="name-box"
             label="Name"
             value={name}
-            onChange={(e) => setName(e.target.value)}  // Controlled input for Name
+            onChange={(e) => setName(e.target.value)}
             variant="standard"
-            sx={{ width: 500 }}
+            sx={{ width: "30%" }}
           />
           <TextField
             id="role-box"
             label="Role"
             value={Role}
-            onChange={(e) => setRole(e.target.value)}  // Controlled input for Role
+            onChange={(e) => setRole(e.target.value)}
             variant="standard"
-            sx={{ width: 500 }}
+            sx={{ width: "30%" }}
           />
         </div>
-        <div style={{width:"82%"}}>
+        <div style={{ width: "82%" }}>
           <TextField
             id="description-multiline"
             label="Description"
             multiline
             rows={3}
             value={description}
-            onChange={(e) => setDes(e.target.value)}  // Controlled input for Description
+            onChange={(e) => setDes(e.target.value)}
             variant="standard"
             fullWidth
           />
@@ -74,7 +117,7 @@ const EditDes = () => {
           variant="standard"
           value={newSkill}
           onChange={(event) => setNewSkill(event.target.value)}
-          sx={{ width: 500 }}
+          sx={{ width: "90%" }}
           onKeyDown={handleAddSkill}  // Handle adding new skill on Enter
         />
         <div className='skill-button-container'>
@@ -84,18 +127,18 @@ const EditDes = () => {
               className="skill-button"
               onClick={() => handleRemoveSkill(skill)}  // Handle skill removal
             >
-              {skill}  ✖
+              {skill} ✖
             </button>
           ))}
         </div>
       </div>
       <div>
-        <button className='desu-but'>
+        <button className='desu-but' onClick={handleUpdate}>
           Update Description
         </button>
       </div>
     </div>
   );
-}
+};
 
 export default EditDes;

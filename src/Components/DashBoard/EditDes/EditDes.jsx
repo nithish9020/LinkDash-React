@@ -1,21 +1,23 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { toast } from 'react-toastify';
-import { doc, updateDoc } from 'firebase/firestore'; // Import updateDoc
-import { db } from '../../../Config/Firebase'; // Import your Firebase config
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../../../Config/Firebase';
 import './EditDes.css';
 import { userAuthDetails } from '../MainDash';
+import { UserContext } from '../../../App';
 
-const EditDes = () => {
-  
+const EditDes = ({ fetchData }) => {
   const userData = useContext(userAuthDetails); // Get user data from context
 
-  const [name, setName] = useState(userData?.name || ""); 
-  const [Role, setRole] = useState(userData?.Role || ""); 
+  const [name, setName] = useState(userData?.name || "");
+  const [Role, setRole] = useState(userData?.Role || "");
   const [description, setDes] = useState(userData?.Description || "");
   const [skills, setSkills] = useState(userData?.skills || []);
   const [newSkill, setNewSkill] = useState("");
   const [userId, setUserId] = useState(userData?.userId || "");
+
+  const userIdList = useContext(UserContext).map(userObject => userObject?.userId).filter(userid => userid !== userData?.userId);
 
   // Function to remove a skill
   const handleRemoveSkill = (skillToRemove) => {
@@ -41,7 +43,6 @@ const EditDes = () => {
   // Function to update the user description in Firestore
   const handleUpdate = async () => {
     try {
-      // Reference to the document in Firestore (replace 'Description' with your collection name)
       const docRef = doc(db, 'Description', userData?.email);
 
       // Update the document with the new data
@@ -50,32 +51,45 @@ const EditDes = () => {
         Role: Role,
         Description: description,
         skills: skills,
-        userId: userId
+        userId: userId,
       });
 
       toast.success("Description updated successfully!", {
-        position: "bottom-right"
+        position: "bottom-right",
       });
+
+      // Fetch the updated data after successful update
+      fetchData();
+
     } catch (error) {
       toast.error("Error updating description: " + error.message, {
-        position: "bottom-right"
+        position: "bottom-right",
       });
       console.error("Error updating document:", error);
     }
   };
 
   return (
-    <div className='EditDes-container'>
+    <div className="EditDes-container">
       <div>
-        <p className='Heading'>Edit Description</p>
+        <p className="Heading">Edit Description</p>
       </div>
-      <div className='input-box-container'>
-        <div className='Flex-box'>
+      <div className="input-box-container">
+        <div className="Flex-box">
           <TextField
             id="user-id-box"
             label="User ID"
             value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              if (userIdList.includes(val)) {
+                setUserId(val);
+                toast.warning("UserId Unavailable!", { position: "top-center" });
+                setTimeout(() => setUserId(''), 100);
+              } else {
+                setUserId(val);
+              }
+            }}
             variant="standard"
             sx={{ width: "30%" }}
           />
@@ -109,8 +123,8 @@ const EditDes = () => {
           />
         </div>
       </div>
-      <div className='Skill-container input-box-container'>
-        <p className='Heading'>Skills</p>
+      <div className="Skill-container input-box-container">
+        <p className="Heading">Skills</p>
         <TextField
           id="skill-add"
           label="Add Skill"
@@ -118,14 +132,14 @@ const EditDes = () => {
           value={newSkill}
           onChange={(event) => setNewSkill(event.target.value)}
           sx={{ width: "90%" }}
-          onKeyDown={handleAddSkill}  // Handle adding new skill on Enter
+          onKeyDown={handleAddSkill} // Handle adding new skill on Enter
         />
-        <div className='skill-button-container'>
+        <div className="skill-button-container">
           {skills.map((skill) => (
-            <button 
-              key={skill} 
+            <button
+              key={skill}
               className="skill-button"
-              onClick={() => handleRemoveSkill(skill)}  // Handle skill removal
+              onClick={() => handleRemoveSkill(skill)} // Handle skill removal
             >
               {skill} ✖
             </button>
@@ -133,7 +147,7 @@ const EditDes = () => {
         </div>
       </div>
       <div>
-        <button className='desu-but' onClick={handleUpdate}>
+        <button className="desu-but" onClick={handleUpdate}>
           Update Description
         </button>
       </div>

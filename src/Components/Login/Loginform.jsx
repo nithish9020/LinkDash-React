@@ -11,26 +11,35 @@ const Loginform = ({handleLogin}) => {
   
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
   const login = async () => {
     try {
+      setLoading(true);
       const user = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
-      console.log(user);
       const isAuthenticated = handleLogin();
       if(isAuthenticated){
+          setLoading(false);
          navigate('/dashboard');
       }
 
     } catch (error) {
+      setLoading(false);
       toast.error(error.message, {
         position: "bottom-right",
     });
       console.log(error)
     }
+  }
+
+  if(loading) {
+    return (
+      <h3>loading...</h3>
+    )
   }
   
   return (

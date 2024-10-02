@@ -2,8 +2,9 @@ import React, { useState, useRef,useContext } from 'react';
 import { UserContext } from '../../App';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../../Config/Firebase';
+import { auth, db, storage } from '../../Config/Firebase';
 import emailjs from 'emailjs-com';
 import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Toastify CSS
@@ -12,8 +13,6 @@ import './Signup.css';
 const Signup = () => {
 
     const idList = useContext(UserContext).map(item => item.userId)|| [];
-
-    console.log(idList);
 
     const texthead = "[ Sign up to edit your LinkDash from your dashboard after logging in ]";
     const [email, setEmail] = useState("");
@@ -67,6 +66,12 @@ const Signup = () => {
     const CreateDoc = async () => {
         try {
 
+            // Reference to default profile image in storage
+            const defaultProfileRef = ref(storage, "prof.png");
+
+            // Get download URL for default profile image
+            const defaultProfileUrl = await getDownloadURL(defaultProfileRef);
+
             const docRef = doc(db,"Description",email);
             await setDoc(docRef,{
                 email: email,
@@ -74,7 +79,8 @@ const Signup = () => {
                 userId: userId,
                 Role: "",
                 Description: "",
-                skills : []
+                skills : [],
+                profileImage: defaultProfileUrl,
             })
 
             const colRef = doc(db,'Store',email);
@@ -90,7 +96,6 @@ const Signup = () => {
             toast.success("Hey Folk! Your Dashboard is Ready!", {
                 position: "bottom-left",
             });
-            console.log("Document written with ID: " + docRef.id);
             setTimeout(() => {
                 navigate('/');
             }, 3000);
@@ -153,7 +158,6 @@ const Signup = () => {
                             setUserId(e.target.value);
                             if(idList.includes(e.target.value)){
                                 setErrorMessage("UserID unavailable");
-                                console.log("userId unavailable");
                             } else {
                                 setErrorMessage("");
                             }

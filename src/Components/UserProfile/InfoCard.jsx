@@ -1,12 +1,20 @@
 import React from 'react';
 import './InfoCard.css';
-import prof from '../../Pictures/prof.png';
 
-const InfoCard = ({name,role,desc,skills}) => {
+const InfoCard = ({name,role,desc,skills,profPicture}) => {
   return (
     <div className='infocard-container'>
         <div>
-        <img src={prof} className='profPic'/>
+        <div
+        style={{
+          backgroundImage: `url(${profPicture})`,
+          borderRadius: '50%',
+          backgroundSize: 'cover', // Ensures the image covers the div
+          backgroundPosition: 'center', // Centers the image
+          width: '150px', // Full width of the parent div
+          height: '150px', // Full height of the parent div
+        }}
+      />
         </div>
         <div className='flexCenter'>
             <h1 className='profname'>{name}</h1>

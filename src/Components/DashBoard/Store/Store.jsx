@@ -24,7 +24,6 @@ const Store = () => {
 
         if (docSnapshot.exists()) {
           const fetchedCollection = docSnapshot.data()?.stores || []; // Default to empty array if stores doesn't exist
-          console.log('Fetched stores:', fetchedCollection);
           setCollection(fetchedCollection);
           setLoading(false);
         } else {

@@ -14,10 +14,10 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditLinks = () => {
-  const [isLoading,setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const userData = useContext(userAuthDetails);
   const [linkList, setLinkList] = useState([]);
-  const [Uselink, setUse] = useState([]);
+  const [Uselink,  setUse] = useState([]);
   const [selectedLink, setSelectedLink] = useState(null); // For the modal
   const [isModalOpen, setModalOpen] = useState(false); // Modal state
 
@@ -46,21 +46,58 @@ const EditLinks = () => {
   };
 
   const handleDelete = () => {
-    setUse((prev) => prev.filter(link => link.id !== selectedLink.id));
+    if (!selectedLink) return;
+  
+    // Remove the link from Uselink and linkList
+    const updatedUselink = Uselink.filter(link => link.id !== selectedLink.id);
+    const updatedLinkList = linkList.filter(link => link.id !== selectedLink.id);
+  
+    // Update both Uselink and linkList states
+    setUse(updatedUselink);
+    setLinkList(updatedLinkList);
+  
+    // Close the modal after deletion
     closeModal();
+  
+    // Log to check the updated lists
+    console.log("Updated Uselink:", updatedUselink);
+    console.log("Updated LinkList:", updatedLinkList);
   };
 
   const handleUrlChange = (e) => {
-    const updatedUrl = e.target.value;
-    setSelectedLink((prev) => ({ ...prev, url: updatedUrl }));
+    // Create a new object with the updated URL value
+    const updatedLink = { ...selectedLink, url: e.target.value };
 
-    // Update Uselink with the new URL
-    setUse((prev) =>
-      prev.map((link) =>
-        link.id === selectedLink.id ? { ...link, url: updatedUrl } : link
-      )
-    );
+    // Update selectedLink state
+    setSelectedLink(updatedLink);
+
+    // Log to confirm the updated selectedLink state
+    console.log("Updated selectedLink:", updatedLink);
   };
+
+  const handleSave = () => {
+    if (!selectedLink) return;
+  
+    console.log("handlesavecheck", selectedLink);
+  
+    // Log Uselink before update
+    console.log("Before Save:", Uselink);
+  
+    // Create a new array with the updated link using map
+    const updatedLinks = Uselink.map((link) =>
+      link.id === selectedLink.id ? selectedLink : link
+    );
+  
+    // Update Uselink with the new array
+    setUse(updatedLinks);
+  
+    // Log the updated Uselink after setting the new state
+    console.log("After Save (after async update):", updatedLinks);
+  
+    // Close the modal after saving
+    closeModal();
+  };
+  
 
   const addSocial = (index) => {
     const isDuplicate = linkList.some(link => link.id === LogoList[index].id);
@@ -105,10 +142,17 @@ const EditLinks = () => {
 
   const updateLinkList = async () => {
     try {
+    
+      const tempLinkList = Uselink.map(link => ({id:link?.id,category:link?.category,url:link?.url}));
+
+      setLinkList(tempLinkList);
+      console.log(tempLinkList);
+      console.log(linkList);
+      
       const linkRef = doc(db, 'Links', userData?.email);
 
       await updateDoc(linkRef, {
-        linkArray: linkList
+        linkArray: tempLinkList
       });
 
       toast.success('Links updated successfully!', {
@@ -121,14 +165,14 @@ const EditLinks = () => {
     }
   };
 
-  if(isLoading) {
+  if (isLoading) {
     return (
       <div className='temp'>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <CircularProgress />
-      </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <CircularProgress />
+        </Box>
       </div>
-    )
+    );
   }
 
   return (
@@ -141,6 +185,17 @@ const EditLinks = () => {
           <Autocomplete
             disablePortal
             options={LogoNames}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                let str = event.target.value;
+                const index = LogoNames.indexOf(str.charAt(0).toUpperCase() + str.slice(1));
+                if (index !== -1)
+                  addSocial(index);
+                else {
+                  toast.dark("Select a valid social media");
+                }
+              }
+            }}
             sx={{ width: 300, "& .MuiOutlinedInput-root": { borderRadius: 3 } }}
             renderInput={(params) => <TextField {...params} label="Search Socials" />}
           />
@@ -152,18 +207,18 @@ const EditLinks = () => {
       </div>
       <div className='link-table'>
         <div>
-          <p className='Heading' style={{textAlign: 'center'}}>Your Contact Links</p>
+          <p className='Heading' style={{ textAlign: 'center' }}>Your Contact Links</p>
           <div className='icon-edit-container'>
             {Uselink.filter(link => link.category === 'contact').map((link) => (
-              <img key={link.id} src={link?.src} alt={link?.category} id={link?.id} height={"70px"} width={"70px"} onClick={() => openModal(link)}/>
+              <img key={link.id} src={link?.src} alt={link?.category} id={link?.id} height={"60px"} width={"60px"} onClick={() => openModal(link)} />
             ))}
           </div>
         </div>
         <div>
-          <p className='Heading' style={{textAlign: 'center'}}>Your Work Links</p>
+          <p className='Heading' style={{ textAlign: 'center' }}>Your Work Links</p>
           <div className='icon-edit-container'>
             {Uselink.filter(link => link.category === 'work').map((link) => (
-              <img key={link.id} src={link?.src} alt={link?.category} id={link?.id} height={"70px"} width={"70px"} onClick={() => openModal(link)}/>
+              <img key={link.id} src={link?.src} alt={link?.category} id={link?.id} height={"60px"} width={"60px"} onClick={() => openModal(link)} />
             ))}
           </div>
         </div>
@@ -188,8 +243,9 @@ const EditLinks = () => {
               onChange={handleUrlChange}
               fullWidth
             />
-            <button className='desu-but' onClick={handleDelete}>Delete</button>
-            <button className='desu-but' onClick={closeModal}>Close</button>
+            <button className='model-button' onClick={handleDelete}>Delete</button>
+            <button className='model-button' onClick={handleSave}>Save</button>
+            <button className='model-button' onClick={closeModal}>Close</button>
           </div>
         </div>
       )}

@@ -8,13 +8,13 @@ import gmail from '../Slogo/gmail.png';
 import instagram from '../Slogo/instagram.png';
 import leetcode from '../Slogo/leetcode.png';
 import linkedin from '../Slogo/linkedin.png';
-import mobile from '../Slogo/mobile.png';
 import notion from '../Slogo/notion.png';
 import portfolio from '../Slogo/portfolio.png';
 import telegram from '../Slogo/telegram.png';
 import threads from '../Slogo/threads.png';
 import twitter from '../Slogo/twitter.png';
 import youtube from '../Slogo/youtube.png';
+import Snapchat from '../Slogo/snapchat.png';
 
 export const LogoList = [
     {id: 0, name: 'Instagram', src: instagram, category: "contact"},
@@ -29,7 +29,7 @@ export const LogoList = [
     {id: 9, name: 'Coffee', src: coffee, category: "work"},
     {id: 10, name: 'GitHub', src: github, category: "work"},
     {id: 11, name: 'Gmail', src: gmail, category: "contact"},
-    {id: 12, name: 'Mobile', src: mobile, category: "contact"},
+    {id: 12, name: 'Snapchat', src: Snapchat , category: "contact"},
     {id: 13, name: 'Notion', src: notion, category: "work"},
     {id: 14, name: 'Portfolio', src: portfolio, category: "work"},
     {id: 15, name: 'Telegram', src: telegram, category: "contact"},

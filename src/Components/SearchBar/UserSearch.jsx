@@ -13,10 +13,16 @@ const UserSearch = ({ size, isDash = false }) => {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      if (!isDash)
-        navigate('/profile', { state: { selectedId: inputUser } });
-      else
-        navigate('/dashboard/profile', { state: { selectedId: inputUser } });
+      navigateToProfile();
+    }
+  };
+
+  const navigateToProfile = () => {
+    const selectedId = inputUser;
+    if (!isDash) {
+      navigate(`/profile/${selectedId}`); // Navigate to /profile/:userId
+    } else {
+      navigate(`/dashboard/profile/${selectedId}`); // Navigate to /dashboard/profile/:userId
     }
   };
 
@@ -24,9 +30,19 @@ const UserSearch = ({ size, isDash = false }) => {
     <Autocomplete
       disablePortal
       onInputChange={(event, input) => setInputUser(input)}
+      onChange={(event, value) => {
+        setInputUser(value);
+        navigateToProfile(); // Navigate when an option is selected
+      }}
       options={idList.map((item) => item.userId)} // Use userId as the option
       sx={{ width: size, "& .MuiOutlinedInput-root": { borderRadius: 3 } }}
-      renderInput={(params) => <TextField {...params} label="Search User" onKeyDown={handleKeyDown} />}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Search User"
+          onKeyDown={handleKeyDown}
+        />
+      )}
     />
   );
 };

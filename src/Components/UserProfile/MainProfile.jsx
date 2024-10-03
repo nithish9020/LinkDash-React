@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { UserContext } from '../../App';
 import { useParams } from 'react-router-dom'; // Import useParams
 import { db } from '../../Config/Firebase';
 import './MainProfile.css';
@@ -10,7 +11,22 @@ import InfoCard from './InfoCard';
 import InfoLinks from './InfoLinks';
 
 const MainProfile = ({ isDash }) => {
+
+  
+  const idList = useContext(UserContext)?.idList.map(idobject => idobject?.userId);
   const { userId: selectedId } = useParams(); // Get the selected ID from URL parameters
+
+  // console.log(idList);
+  // console.log(selectedId);
+  // console.log(idList.indexOf(selectedId));
+  
+  if(idList.indexOf(selectedId) === -1) {
+    return(
+      <div className={isDash ? 'mprof-container' : 'mprof-container-margin'}>
+        <p>No user Available</p>
+      </div>
+    )
+  }
 
   const [userData, setUserData] = useState(null);
   const [linkList, setLinkList] = useState([]);

@@ -28,6 +28,7 @@ const UserSearch = ({ size, isDash = false }) => {
 
   return (
     <Autocomplete
+      autoComplete={false}
       disablePortal
       onInputChange={(event, input) => setInputUser(input)}
       onChange={(event, value) => {

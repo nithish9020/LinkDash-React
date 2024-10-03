@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef,useEffect, useState } from 'react'
 import './Login.css'
 import { useNavigate } from 'react-router-dom';
 import {auth} from '../../Config/Firebase';
@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import PassChange from '../PasswordChange/PassChange';
 
 const Loginform = ({handleLogin}) => {
+
+  const emailRef = useRef(null);
   
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
@@ -35,6 +37,13 @@ const Loginform = ({handleLogin}) => {
       console.log(error)
     }
   }
+  
+  // Focus on the email input field when the component mounts
+  useEffect(() => {
+    if (emailRef.current) {
+      emailRef.current.focus();
+    }
+  }, []);
 
   if(loading) {
     return (
@@ -50,6 +59,8 @@ const Loginform = ({handleLogin}) => {
       </div>
       <div className='flexGrid input-div'>
           <input 
+            ref={emailRef}
+            autoComplete="email"
             className='input-login' 
             placeholder='Email' 
             type='email'

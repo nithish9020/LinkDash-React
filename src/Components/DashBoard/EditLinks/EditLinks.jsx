@@ -143,7 +143,7 @@ const EditLinks = () => {
   const updateLinkList = async () => {
     try {
     
-      const tempLinkList = Uselink.map(link => ({id:link?.id,category:link?.category,url:link?.url}));
+      const tempLinkList = Uselink.map(link => ({id:link?.id,category:link?.category,url:link?.url})).filter(link => link?.url!=='');
 
       setLinkList(tempLinkList);
       console.log(tempLinkList);

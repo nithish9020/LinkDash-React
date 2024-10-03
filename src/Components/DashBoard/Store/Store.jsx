@@ -48,11 +48,13 @@ const Store = () => {
 
   const UpdateCollection = async () => {
     try {
+
+      const collectionTemp = collections.filter(clink => clink?.url!=='');
       const docRef = doc(db, 'Store', userData?.email);
 
       // Update the document with the new data
       await updateDoc(docRef, {
-        stores: collections
+        stores: collectionTemp
       });
 
       toast.success('Stores updated successfully!', {
@@ -95,7 +97,7 @@ const Store = () => {
   return (
     <div className='EditDes-container'>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '85%', flexBasis: '10%' }}>
-        <p className='Heading'>Add Stores</p>
+        <p className='Heading'>Add Custom Links</p>
         <button className='add-but' onClick={AddStore}>
           +
         </button>
@@ -103,7 +105,7 @@ const Store = () => {
       <div className='store-container'>
         {collections.map((collection, index) => (
           <div className='store' key={index}>
-            <p>Store {index + 1}</p>
+            <p>Custom Link {index + 1}</p>
             <TextField
               label='Collection Label'
               value={collection.name}
@@ -119,14 +121,14 @@ const Store = () => {
               onChange={handleChange(index, 'url')}
             />
             <button className='delete-store-button' onClick={() => handleDeleteStore(index)}>
-              Delete Store
+              Delete Link
             </button>
           </div>
         ))}
       </div>
       <div>
         <button className='desu-but' onClick={UpdateCollection}>
-          Update Collections
+          Update Customs
         </button>
       </div>
     </div>

@@ -13,6 +13,7 @@ import './Signup.css';
 const Signup = () => {
 
     const idList = useContext(UserContext)?.idList?.map(item => item.userId)|| [];
+    const fetchUserId = useContext(UserContext)?.fetchUserId;
 
     const texthead = "[ Sign up to edit your LinkDash from your dashboard after logging in ]";
     const [email, setEmail] = useState("");
@@ -92,6 +93,8 @@ const Signup = () => {
             await setDoc(linkRef,{
                 linkArray:[]
             });
+
+            fetchUserId();
 
             toast.success("Hey Folk! Your Dashboard is Ready!", {
                 position: "bottom-left",

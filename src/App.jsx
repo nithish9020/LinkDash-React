@@ -72,7 +72,7 @@ function App() {
 
   return (
     <>
-    <UserContext.Provider value={{ idList, toggleAuthentication: handleLogOut }}>
+    <UserContext.Provider value={{ idList, toggleAuthentication: handleLogOut, fetchUserId }}>
       <ToastContainer />
     <Router>
       {!isAuthenticated && <Navbar />}

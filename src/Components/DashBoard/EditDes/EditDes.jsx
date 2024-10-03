@@ -8,7 +8,9 @@ import { userAuthDetails } from '../MainDash';
 import { UserContext } from '../../../App';
 
 const EditDes = ({ fetchData }) => {
+  
   const userData = useContext(userAuthDetails); // Get user data from context
+  const fetchUserId = useContext(UserContext)?.fetchUserId;
 
   const [name, setName] = useState(userData?.name || "");
   const [Role, setRole] = useState(userData?.Role || "");
@@ -53,6 +55,8 @@ const EditDes = ({ fetchData }) => {
         skills: skills,
         userId: userId,
       });
+
+      fetchUserId();
 
       toast.success("Description updated successfully!", {
         position: "bottom-right",

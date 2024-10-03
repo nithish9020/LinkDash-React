@@ -11,10 +11,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { toast } from 'react-toastify';
 import Delete from '../../Delete/Delete';
+import { getAuth } from 'firebase/auth';
 
 const Sidenav = ({ logout, fetchData, toggleAuthentication }) => {
   const [progress, setProgress] = useState(0);
   const userData = useContext(userAuthDetails); // Get user data from context
+
+  const auth = getAuth();
+
+  const user = auth.currentUser;
   
   if(!userData) {
     return(
@@ -60,7 +65,7 @@ const uploadProfileImage = async (file) => {
     // Delete existing custom profile image if not default
     const oldImageUrl = userData.profileImage; // Get the current image URL from userData
     const oldFileExtension = oldImageUrl.split('.').pop().split('?')[0]; // Extract the file extension from the URL
-    const oldImageRef = ref(storage, `${userData.userId}.${oldFileExtension}`);
+    const oldImageRef = ref(storage, `${user?.uid}.${oldFileExtension}`);
 
     deleteObject(oldImageRef).catch((error) => {
       console.error("Error deleting previous profile image:", error);
@@ -68,7 +73,7 @@ const uploadProfileImage = async (file) => {
   }
 
   const fileExtension = file.name.split('.').pop();  // Extract the file extension (e.g., 'png', 'jpg')
-  const newImageRef = ref(storage, `${userData.userId}.${fileExtension}`);
+  const newImageRef = ref(storage, `${user?.uid}.${fileExtension}`);
 
   const uploadTask = uploadBytesResumable(newImageRef, file);
 

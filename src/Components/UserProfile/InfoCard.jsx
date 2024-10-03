@@ -24,12 +24,11 @@ const InfoCard = ({name,role,desc,skills,profPicture}) => {
             <p>{desc}</p>
         </div>
         <div className='skill-container'>
-            {
-                skills.map( (skill,index) => (
-                    <div className='skilldiv' key={index}>{skill}</div>
-                    )
-                )
-            }
+          {
+              skills.map( (skill, index) => (
+               <div className='skilldiv' key={index}>{skill}</div>
+            ))
+          }
         </div>
     </div>
   )

@@ -9,7 +9,7 @@ const UserSearch = ({ size, isDash = false }) => {
   const navigate = useNavigate();
 
   // Get the idList from context
-  const idList = useContext(UserContext) || []; // Ensure idList is always an array
+  const idList = useContext(UserContext)?.idList || []; // Ensure idList is always an array
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

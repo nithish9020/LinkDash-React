@@ -17,7 +17,7 @@ const EditDes = ({ fetchData }) => {
   const [newSkill, setNewSkill] = useState("");
   const [userId, setUserId] = useState(userData?.userId || "");
 
-  const userIdList = useContext(UserContext).map(userObject => userObject?.userId).filter(userid => userid !== userData?.userId);
+  const userIdList = useContext(UserContext)?.idList?.map(userObject => userObject?.userId).filter(userid => userid !== userData?.userId);
 
   // Function to remove a skill
   const handleRemoveSkill = (skillToRemove) => {

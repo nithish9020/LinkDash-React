@@ -12,7 +12,7 @@ import './Signup.css';
 
 const Signup = () => {
 
-    const idList = useContext(UserContext).map(item => item.userId)|| [];
+    const idList = useContext(UserContext)?.idList?.map(item => item.userId)|| [];
 
     const texthead = "[ Sign up to edit your LinkDash from your dashboard after logging in ]";
     const [email, setEmail] = useState("");
@@ -136,7 +136,6 @@ const Signup = () => {
 
     return (
         <div className='signup-container'>
-            <ToastContainer /> {/* Toast container for displaying toasts */}
             <div className='flexdisp'>
                 <h1 style={{ color: "green" }}>{texthead}</h1>
             </div>

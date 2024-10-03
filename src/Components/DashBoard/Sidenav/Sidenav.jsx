@@ -148,7 +148,7 @@ const updateUserProfileImage = async (downloadURL) => {
         Change Password
       </div>
       <div className='flexCol'>
-        <Delete imagePath = {userData?.profileImage} />
+        <Delete imagePath={userData?.profileImage || ''} />
       </div>
       <div className='flexCol logout-div'>
         <button className='logout-btn' onClick={logout}>Logout</button>

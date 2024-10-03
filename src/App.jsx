@@ -72,7 +72,8 @@ function App() {
 
   return (
     <>
-    <UserContext.Provider value={idList} toggleAuthentication = {handleLogOut}>
+    <UserContext.Provider value={{ idList, toggleAuthentication: handleLogOut }}>
+      <ToastContainer />
     <Router>
       {!isAuthenticated && <Navbar />}
       <Routes>
@@ -88,7 +89,6 @@ function App() {
             ="*" element={<Navigate to="/" />} />
             )}
       </Routes>
-      <ToastContainer />
     </Router>
     </UserContext.Provider>
     </>

@@ -25,8 +25,8 @@ const InfoCard = ({name,role,desc,skills,profPicture}) => {
         </div>
         <div className='skill-container'>
             {
-                skills.map( (skill) => (
-                    <div className='skilldiv'>{skill}</div>
+                skills.map( (skill,index) => (
+                    <div className='skilldiv' key={index}>{skill}</div>
                     )
                 )
             }

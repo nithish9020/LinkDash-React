@@ -6,13 +6,14 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { db, storage } from '../../Config/Firebase';
 import { deleteObject, ref } from 'firebase/storage';
 import { UserContext } from '../../App';
-const Delete = (imagePath) => {
+const Delete = ({imagePath}) => {
 
     const navigate = useNavigate();
     const auth = getAuth();
     const user = auth.currentUser;
 
-    const toggleisAuth = useContext(UserContext).toggleAuthentication;
+    const toggleisAuth = useContext(UserContext)?.toggleAuthentication;
+
 
     const extractFilenameFromURL = (url) => {
         
@@ -25,6 +26,9 @@ const Delete = (imagePath) => {
         
         return filenameWithToken;
     }
+    const imagePathFirebase = extractFilenameFromURL(imagePath);
+
+    
 
     const deleteLinks = async() => {
         try {
@@ -48,7 +52,6 @@ const Delete = (imagePath) => {
 
     const deleteProf = async() => {
         try {
-            const imagePathFirebase = extractFilenameFromURL(imagePath)
             const imageRef = ref(storage, imagePathFirebase);
             await deleteObject(imageRef);
             console.log('profile deleted');
@@ -66,7 +69,7 @@ const Delete = (imagePath) => {
            await Promise.all([
                deleteLinks(),
                deleteStore(),
-               deleteProf()
+               imagePathFirebase==='prof.png'? Promise.resolve() : deleteProf(),
            ]);
        } catch (error) {
             console.log(error.message)

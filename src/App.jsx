@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState,createContext,useEffect } from 'react';
-import { auth, db } from './Config/Firebase';
+import { db } from './Config/Firebase';
 
 import { collection, getDocs } from 'firebase/firestore';
 import Aboutus from './Components/About/Aboutus';

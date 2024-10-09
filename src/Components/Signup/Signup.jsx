@@ -48,7 +48,12 @@ const Signup = () => {
           };
         
         // Send the OTP via EmailJS
-        emailjs.send('service_seqaed2', 'template_oohlgse', templateParams, 'TItVCrCoNmPhzn0Oq')
+        emailjs.send(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+            templateParams,
+            import.meta.env.VITE_EMAILJS_USER_ID
+        )
         .then((response) => {
             console.log('Email sent sucessfully',response.status,response.text);
             toast.success("OTP sent!", {
